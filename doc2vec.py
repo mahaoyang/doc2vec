@@ -25,14 +25,14 @@ def get_corpus():
     return train_docs
 
 
-def train(x_train, size=200, epoch_num=1):
+def train(x_train, size=200, epoch_num=70):
     model_dm = Doc2Vec(x_train, min_count=1, window=3, size=size, sample=1e-3, negative=5, workers=4)
-    model_dm.train(x_train, total_examples=model_dm.corpus_count, epochs=70)
+    model_dm.train(x_train, total_examples=model_dm.corpus_count, epochs=epoch_num)
     model_dm.save('model_doc2vec')
     return model_dm
 
 
-def predict(sentence,top_k=10):
+def predict(sentence, top_k=10):
     model_dm = Doc2Vec.load("model_doc2vec")
     text_cut = jieba.cut(sentence)
     text_raw = []
