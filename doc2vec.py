@@ -12,7 +12,7 @@ TaggededDocument = gensim.models.doc2vec.TaggedDocument
 
 
 def get_corpus():
-    with open("corpus_seg.txt", 'r', encoding='UTF-8') as doc:
+    with open("data.txt", 'r', encoding='UTF-8') as doc:
         docs = doc.readlines()
     train_docs = []
     for i, text in enumerate(docs):
