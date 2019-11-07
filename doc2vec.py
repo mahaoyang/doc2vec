@@ -39,8 +39,8 @@ def predict(sentence, top_k=10):
     for i in list(text_cut):
         text_raw.append(i)
     inferred_vector_dm = model_dm.infer_vector(text_raw)
-    sims = model_dm.docvecs.most_similar([inferred_vector_dm], topn=top_k)
-    return sims
+    sim_n = model_dm.docvecs.most_similar([inferred_vector_dm], topn=top_k)
+    return sim_n
 
 
 if __name__ == '__main__':
