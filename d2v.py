@@ -1,13 +1,11 @@
 #! -*- coding: utf-8 -*-
 import gensim
 import jieba
-from gensim.models.doc2vec import Doc2Vec
+from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 
 stop_text = open('stop_words.txt', 'r', encoding='utf-8')
 stop_words = set([i.strip('\n') for i in stop_text.readlines()])
 jieba.load_userdict('user_dict.txt')
-
-TaggededDocument = gensim.models.doc2vec.TaggedDocument
 
 
 def cut_without_stop_words(text):
@@ -23,7 +21,7 @@ def get_corpus():
         word_list = text.split(' ')
         length = len(word_list)
         word_list[length - 1] = word_list[length - 1].strip()
-        document = TaggededDocument(word_list, tags=[i])
+        document = TaggedDocument(word_list, tags=[i])
         train_docs.append(document)
     return train_docs
 
