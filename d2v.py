@@ -1,16 +1,17 @@
 #! -*- coding: utf-8 -*-
 import gensim
-import numpy as np
-from jieba.analyse import ChineseAnalyzer
-from gensim.models.doc2vec import Doc2Vec, LabeledSentence
-analyzer = ChineseAnalyzer()
+import jieba
+from gensim.models.doc2vec import Doc2Vec
+
+stop_text = open('stop_words.txt', 'r', encoding='utf-8')
+stop_words = set([i.strip('\n') for i in stop_text.readlines()])
 jieba.load_userdict('user_dict.txt')
 
-# stop_text = open('stop_list.txt', 'r')
-# stop_word = []
-# for line in stop_text:
-#     stop_word.append(line.strip())
 TaggededDocument = gensim.models.doc2vec.TaggedDocument
+
+
+def cut_without_stop_words(text):
+    return [i for i in jieba.cut_for_search(text) if i not in stop_words]
 
 
 def get_corpus():
@@ -18,7 +19,7 @@ def get_corpus():
         docs = doc.readlines()
     train_docs = []
     for i, text in enumerate(docs):
-        # text = ' '.join(jieba.cut(text, cut_all=True))
+        text = ' '.join(cut_without_stop_words(text))
         word_list = text.split(' ')
         length = len(word_list)
         word_list[length - 1] = word_list[length - 1].strip()
@@ -36,11 +37,8 @@ def train(x_train, size=200, epoch_num=70):
 
 def predict(sentence, top_k=10):
     model_dm = Doc2Vec.load("model_doc2vec")
-    text_cut = jieba.cut(sentence)
-    text_raw = []
-    for i in list(text_cut):
-        text_raw.append(i)
-    inferred_vector_dm = model_dm.infer_vector(text_raw)
+    text_cut = cut_without_stop_words(sentence)
+    inferred_vector_dm = model_dm.infer_vector(text_cut)
     sim_n = model_dm.docvecs.most_similar([inferred_vector_dm], topn=top_k)
     return sim_n
 
@@ -55,4 +53,3 @@ if __name__ == '__main__':
         for word in sentence[0]:
             words = words + word + ' '
         print(sim, len(sentence[0]), words)
-        # print(sim, len(sentence[0]))
