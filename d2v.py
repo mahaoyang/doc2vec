@@ -17,8 +17,7 @@ def get_corpus():
         docs = doc.readlines()
     train_docs = []
     for i, text in enumerate(docs):
-        text = ' '.join(cut_without_stop_words(text))
-        word_list = text.split(' ')
+        word_list = cut_without_stop_words(text)
         length = len(word_list)
         word_list[length - 1] = word_list[length - 1].strip()
         document = TaggedDocument(word_list, tags=[i])
