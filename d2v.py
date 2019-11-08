@@ -1,4 +1,5 @@
 #! -*- coding: utf-8 -*-
+import os
 from multiprocessing import cpu_count
 
 import jieba
@@ -43,7 +44,8 @@ def predict(sentence, top_k=10):
 
 if __name__ == '__main__':
     x_train = get_corpus()
-    model_dm = train(x_train)
+    if not os.path.exists('model_doc2vec'):
+        model_dm = train(x_train)
     sims = predict(sentence='经现场相关人员了解雨天路滑视线模糊加之车辆速度过快导致了该起事故的发生')
     for count, sim in sims:
         sentence = x_train[count]
