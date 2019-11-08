@@ -27,7 +27,7 @@ def get_corpus():
 
 
 def train(x_train, size=200, epoch_num=70):
-    model_dm = Doc2Vec(x_train, seed=321, min_count=1, window=5, vector_size=size, sample=1e-3, negative=10, workers=cpu_count())
+    model_dm = Doc2Vec(x_train, seed=321, min_count=1, window=5, vector_size=size, sample=1e-3, negative=5, workers=cpu_count())
     model_dm.train(x_train, total_examples=model_dm.corpus_count, epochs=epoch_num)
     model_dm.save('model_doc2vec')
     return model_dm
