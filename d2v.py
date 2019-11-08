@@ -1,6 +1,6 @@
 #! -*- coding: utf-8 -*-
 from multiprocessing import cpu_count
-import gensim
+
 import jieba
 from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 
@@ -26,7 +26,7 @@ def get_corpus():
     return train_docs
 
 
-def train(x_train, size=100, epoch_num=70):
+def train(x_train, size=200, epoch_num=70):
     model_dm = Doc2Vec(x_train, seed=321, min_count=1, window=5, vector_size=size, sample=1e-3, negative=10, workers=cpu_count())
     model_dm.train(x_train, total_examples=model_dm.corpus_count, epochs=epoch_num)
     model_dm.save('model_doc2vec')
